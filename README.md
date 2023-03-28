@@ -1,2 +1,22 @@
 # Certificate--generator---emailing
 Certificate generation is a very tedious task for universities &amp; various other institutions therefore, here is our problem statement to generate multiple certificates of different students entered in an excel sheet automatically making this tedious task done easily which was previously done manually.
+The first file will generate the certificates with the help of the excel sheet as input.
+The second file will send the email to the corresponding user.
+First of all, libraries like OpenCV via cv2, openpyxl is used for real-time operation and to read from an Excel file or write into an Excel file respectively. Further, template path is passed – to get access of certificate template, details path- to grab name and other details from excel sheet and output path- to store the generated certificates, are provided in the code. To get the above stated details in desired size and color we set the size and color in (B, G, R) format. Then the excel file is loaded to obj variable through load_workbook() which is inbuilt function of openpyxl library. This excel file is activated through obj.active to do further manipulation. To print ‘x’ number of certificates, we use for loop statement as, for i in range (2, x+1):
+Inside the for loop, to get the name of candidate who won to be printed on certificate we grab ‘i’ number of rows and number of column (=1) from excel file, we use sheet.cell and get_name.value() function as mentioned in the code.
+To get the winning position of candidate, we grab ‘i’ number of rows and number of column (=2) from excel file, we use sheet.cell and get_position.value() function.
+To get the event name in which candidate won, we grab ‘i’ number of rows and number of column (=3) from excel file, we use sheet.cell and get_event.value() function.
+To get the college name of candidate to be printed on certificate, we grab ‘i’ number of rows and number of column (=4) from excel file, we use sheet.cell and get_clg.value() function.
+For extracting the certificate template, we use cv.imread() (inside which template path is to be provided )which is inbuilt function of cv2 library. Font style is chosen via cv. Font() function . To get the size of the name to be printed, we need to know the (x,y) pixels where the name is to be written on the  template , for which cv.putText () function is used.
+At last to save the certificates generated, cv.imwrite is used in which(f ’ path of folder/ certificate name variable,img) is to be given .
+To send email firstly we need to import certain libraries i.e. Simple Mail Transfer Protocol (SMTP), OS library to read name of file which are to be sent from a particular path. Next we import MIME library. MIME is an email package used for managing email messages. The overall structure of the email package can be divided into three major components.
+1. Subject of email, 
+2. Body of email,
+3. Attachment to be sent in email.
+We also import email portion of encoders library because to fire an email we need to encode the package in a 64-Encoder.
+SMTP library has various features. To use email feature we take port 587, this is a standard secure SMTP port.
+We have created a function send_mail(). So that it can be used repeatedly without writing the whole code again & again. 
+We define a list email_list which contains list of people to whom the email has to be sent from the dumy emailid that we have created "sl2ecde55@gmail.com". Then we define variables to store Body of the email, Subject of the email and a 
+FILEList variable to access all the attachments. 
+A for loop is created to send the email to each person in list defined "email_list". Then we create a msg object which will have different part of email i.e. email_from, email_list, subject using MIME object. We attach the body of email to this using msg.attach(MIMEText) function. An attachment variable defines that all the attachment from the given path are read in binary form. Furthermore, to let the receiver able to download the attachment we create an attachment package and load different bits so that it is downloadable. The encoded file is in ASCII characters format. So, we convert it back to string and store in variable text. Now the email is ready to get fired!!
+To connect with SMTP server, we need to give the login credentials i.e. smtp_port, smtp_server, email_from and app password for SMTP Email and lastly start the TLS for enhanced encryption in transit. After successfully sending the email we quit from the server.
